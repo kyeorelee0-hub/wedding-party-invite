@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>청첩파티 공지 — 유인상 ♥ 이겨레</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: rgba(220, 185, 140, 0.9);
+      --white: #ffffff;
+      --white-80: rgba(255,255,255,0.82);
+      --white-55: rgba(255,255,255,0.55);
+      --white-35: rgba(255,255,255,0.35);
+    }
+
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      font-family: 'Noto Serif KR', serif;
+      background: #1a120a;
+      color: var(--white);
+    }
+
+    body {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 297mm;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: url('photo.jpg') center / cover no-repeat;
+      z-index: 0;
+    }
+    .bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 6, 3, 0.38);
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 460px;
+      background: rgba(10, 5, 2, 0.58);
+      border: 1px solid rgba(255,255,255,0.10);
+      padding: 56px 48px;
+    }
+
+    /* Hero */
+    .hero { text-align: center; margin-bottom: 36px; }
+    .label {
+      font-size: 10px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--white-55);
+      margin-bottom: 22px;
+    }
+    .names {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 8px;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .heart-line {
+      font-size: 18px;
+      font-style: italic;
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 22px;
+    }
+    .invite-text {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: var(--white-80);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+    .invite-sub {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--white-80);
+      line-height: 2;
+      letter-spacing: 0.3px;
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0 auto 40px;
+    }
+    .div-line { flex: 1; height: 1px; background: var(--white-35); }
+    .div-diamond {
+      width: 5px; height: 5px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* Info */
+    .info-block { display: flex; flex-direction: column; gap: 22px; }
+    .info-row { display: flex; align-items: flex-start; gap: 18px; }
+    .info-icon { font-size: 15px; opacity: 0.7; margin-top: 2px; flex-shrink: 0; width: 20px; text-align: center; }
+    .info-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--white-55); margin-bottom: 3px; }
+    .info-value { font-size: 15px; font-weight: 500; color: var(--white-80); line-height: 1.6; letter-spacing: 0.5px; }
+    .info-sub { font-size: 12px; color: var(--white-55); margin-top: 2px; }
+    .info-note { margin-top: 5px; font-size: 11px; color: var(--white-55); letter-spacing: 0.3px; }
+
+    /* Print button (화면에서만 보임) */
+    .print-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 10;
+      padding: 12px 24px;
+      background: rgba(255,255,255,0.92);
+      color: #2a211a;
+      border: none;
+      border-radius: 2px;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+
+    @media print {
+      html, body { width: 210mm; height: 297mm; }
+      .bg { position: fixed; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .card { background: rgba(10, 5, 2, 0.58); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .print-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <div class="card">
+    <div class="hero">
+      <p class="label">Wedding Party</p>
+      <p class="names">유인상 · 이겨레</p>
+      <p class="heart-line">♥</p>
+      <p class="invite-text">두 사람의 청첩파티에 초대합니다.</p>
+      <p class="invite-sub">가벼운 마음으로 오셔서 간단히 먹고 마시며 근황 이야기 나눠요 :)<br>잠깐 들러서 얼굴만 보고 가도 좋아요</p>
+    </div>
+
+    <div class="divider">
+      <div class="div-line"></div>
+      <div class="div-diamond"></div>
+      <div class="div-line"></div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-row">
+        <span class="info-icon">📅</span>
+        <div class="info-content">
+          <p class="info-label">Date &amp; Time</p>
+          <p class="info-value">2026년 7월 10일 금요일 · 오후 6시 30분 – 9시 30분</p>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">📍</span>
+        <div class="info-content">
+          <p class="info-label">Place</p>
+          <p class="info-value">샹볼뮈지니</p>
+          <p class="info-sub">서울 강남구 역삼동 670-14</p>
+          <p class="info-note">주차가 어려운 곳이라 대중교통을 추천드려요 :)</p>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">🥤</span>
+        <div class="info-content">
+          <p class="info-value">논알콜 음료도 있어요</p>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">👔</span>
+        <div class="info-content">
+          <p class="info-label">Dress Code</p>
+          <p class="info-value">파랑 계열(하늘색~네이비) 옷이나 포인트 소품이 있다면 함께해 주세요 💙</p>
+          <p class="info-sub">청바지, 셔츠, 모자, 머리핀 등 뭐든 환영해요!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="print-btn" onclick="window.print()">PDF로 저장</button>
+</body>
+</html>
