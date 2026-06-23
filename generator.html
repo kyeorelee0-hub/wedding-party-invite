@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>초대 링크 생성기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Serif KR', serif;
+      background: #f8f5f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      color: #2a211a;
+    }
+
+    .card {
+      background: #fff;
+      max-width: 480px;
+      width: 100%;
+      padding: 52px 44px;
+      box-shadow: 0 2px 40px rgba(80,50,20,.10);
+      border-radius: 1px;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      font-size: 12px;
+      color: #8a7a70;
+      margin-bottom: 36px;
+      line-height: 1.8;
+    }
+
+    label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #8a7a70;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #e2d9ce;
+      border-radius: 1px;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 15px;
+      color: #2a211a;
+      background: #fdf9f5;
+      outline: none;
+      transition: border-color 0.15s;
+      margin-bottom: 28px;
+    }
+
+    input[type="text"]:focus { border-color: #b89b7a; }
+
+    .result-box {
+      display: none;
+      background: #f8f5f0;
+      border: 1px solid #e2d9ce;
+      border-radius: 1px;
+      padding: 16px;
+      margin-bottom: 12px;
+      word-break: break-all;
+    }
+
+    .result-box.visible { display: block; }
+
+    .result-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #8a7a70;
+      margin-bottom: 8px;
+    }
+
+    .result-url {
+      font-size: 13px;
+      color: #2a211a;
+      line-height: 1.6;
+    }
+
+    .copy-btn {
+      width: 100%;
+      padding: 14px;
+      background: #2a211a;
+      color: #faf8f4;
+      border: none;
+      border-radius: 1px;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: none;
+    }
+
+    .copy-btn.visible { display: block; }
+    .copy-btn:hover { background: #3d2f24; }
+    .copy-btn.copied { background: #b89b7a; }
+
+    .divider {
+      height: 1px;
+      background: #e2d9ce;
+      margin: 32px 0;
+    }
+
+    .history { display: flex; flex-direction: column; gap: 10px; }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      background: #fdf9f5;
+      border: 1px solid #e2d9ce;
+      border-radius: 1px;
+    }
+
+    .history-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .history-copy {
+      font-size: 11px;
+      color: #b89b7a;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: 'Noto Serif KR', serif;
+      letter-spacing: 1px;
+      padding: 4px 8px;
+      border: 1px solid #e2d9ce;
+      border-radius: 1px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .history-copy:hover { border-color: #b89b7a; }
+
+    .history-title {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #8a7a70;
+      margin-bottom: 12px;
+    }
+
+    .empty { font-size: 12px; color: #c5b9af; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>초대 링크 생성기</h1>
+    <p class="sub">이름을 입력하면 개인화된 초대 링크가 만들어져요.<br>링크에 이름이 보이지 않아요 :)</p>
+
+    <label for="nameInput">초대할 사람 이름</label>
+    <input type="text" id="nameInput" placeholder="홍길동" autocomplete="off">
+
+    <div class="result-box" id="resultBox">
+      <p class="result-label">생성된 링크</p>
+      <p class="result-url" id="resultUrl"></p>
+    </div>
+
+    <button class="copy-btn" id="copyBtn">링크 복사</button>
+
+    <div class="divider"></div>
+
+    <p class="history-title">생성 기록</p>
+    <div class="history" id="history">
+      <p class="empty">아직 생성된 링크가 없어요</p>
+    </div>
+  </div>
+
+  <script>
+    const BASE_URL = 'https://kyeorelee0-hub.github.io/wedding-party/';
+    const input = document.getElementById('nameInput');
+    const resultBox = document.getElementById('resultBox');
+    const resultUrl = document.getElementById('resultUrl');
+    const copyBtn = document.getElementById('copyBtn');
+    const historyEl = document.getElementById('history');
+
+    let currentUrl = '';
+    let historyList = JSON.parse(localStorage.getItem('invite-history') || '[]');
+
+    function encode(name) {
+      return btoa(unescape(encodeURIComponent(name)));
+    }
+
+    function renderHistory() {
+      if (historyList.length === 0) {
+        historyEl.innerHTML = '<p class="empty">아직 생성된 링크가 없어요</p>';
+        return;
+      }
+      historyEl.innerHTML = historyList.map((item, i) => `
+        <div class="history-item">
+          <span class="history-name">${item.name}</span>
+          <button class="history-copy" onclick="copyHistoryItem(${i})">복사</button>
+        </div>
+      `).join('');
+    }
+
+    function copyHistoryItem(i) {
+      navigator.clipboard.writeText(historyList[i].url).then(() => {
+        const btns = document.querySelectorAll('.history-copy');
+        btns[i].textContent = '복사됨 ✓';
+        setTimeout(() => btns[i].textContent = '복사', 1500);
+      });
+    }
+
+    input.addEventListener('input', () => {
+      const name = input.value.trim();
+      if (!name) {
+        resultBox.classList.remove('visible');
+        copyBtn.classList.remove('visible');
+        return;
+      }
+      currentUrl = BASE_URL + '?to=' + encode(name);
+      resultUrl.textContent = currentUrl;
+      resultBox.classList.add('visible');
+      copyBtn.classList.add('visible');
+      copyBtn.textContent = '링크 복사';
+      copyBtn.classList.remove('copied');
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const name = input.value.trim();
+      navigator.clipboard.writeText(currentUrl).then(() => {
+        copyBtn.textContent = '복사됨 ✓';
+        copyBtn.classList.add('copied');
+
+        // 기록 저장
+        if (!historyList.find(h => h.name === name)) {
+          historyList.unshift({ name, url: currentUrl });
+          localStorage.setItem('invite-history', JSON.stringify(historyList));
+          renderHistory();
+        }
+        setTimeout(() => {
+          copyBtn.textContent = '링크 복사';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+
+    renderHistory();
+  </script>
+</body>
+</html>
